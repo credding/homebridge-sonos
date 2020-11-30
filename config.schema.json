@@ -1,0 +1,25 @@
+{
+  "pluginAlias": "sonos",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "clientKey": {
+        "title": "Client Key",
+        "type": "string",
+        "required": true
+      },
+      "clientSecret": {
+        "title": "Client Secret",
+        "type": "string",
+        "required": true
+      },
+      "refreshToken": {
+        "title": "Refresh Token",
+        "type": "string",
+        "required": true
+      }
+    }
+  }
+}

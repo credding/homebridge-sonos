@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node14",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@credding/homebridge-util/dist/jsx"
+  }
+}

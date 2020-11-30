@@ -1,0 +1,81 @@
+@sonosAuthorizationApi=https://api.sonos.com/login/v3
+@sonosControlApi=https://api.ws.sonos.com/control/api/v1
+
+### Create Authorization Code
+
+GET {{sonosAuthorizationApi}}/oauth
+    ?client_id={{sonosClientKey}}
+    &response_type=code
+    &state={{$guid}}
+    &scope=playback-control-all
+    &redirect_uri={{sonosRedirectUri}}
+
+### Create Token
+
+@authorizationCode=
+
+# @name tokenRequest
+POST {{sonosAuthorizationApi}}/oauth/access
+Authorization: Basic {{sonosClientKey}} {{sonosClientSecret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code={{authorizationCode}}
+&redirect_uri={{sonosRedirectUri}}
+
+### Refresh Token
+
+@accessToken={{tokenRequest.response.body.access_token}}
+@refreshToken={{tokenRequest.response.body.refresh_token}}
+
+# @name tokenRequest
+POST {{sonosAuthorizationApi}}/oauth/access
+Authorization: Basic {{sonosClientKey}}:{{sonosClientSecret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&refresh_token={{refreshToken}}
+
+### Get Households
+
+# @name getHouseholds
+GET {{sonosControlApi}}/households
+Authorization: Bearer {{accessToken}}
+
+### Get Groups
+
+@householdId={{getHouseholds.response.body.households[0].id}}
+
+# @name getGroups
+GET {{sonosControlApi}}/households/{{householdId}}/groups
+Authorization: Bearer {{accessToken}}
+
+### Get Player Volume
+
+@playerId={{getGroups.response.body.players[0].id}}
+
+# @name getPlayerVolume
+GET {{sonosControlApi}}/players/{{playerId}}/playerVolume
+Authorization: Bearer {{accessToken}}
+
+### Set Player Volume
+
+# @name setPlayerVolume
+POST {{sonosControlApi}}/players/{{playerId}}/playerVolume
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "volume": 30
+}
+
+### Set Player Mute
+
+# @name setPlayerMute
+POST {{sonosControlApi}}/players/{{playerId}}/playerVolume/mute
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "muted": false
+}
