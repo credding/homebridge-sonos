@@ -1,1 +1,0 @@
-export { SonosPlayerAccessory } from "./SonosPlayerAccessory";

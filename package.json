@@ -1,10 +1,12 @@
 {
   "displayName": "Sonos",
   "name": "@credding/homebridge-sonos",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "keywords": [
-    "homebridge-plugin"
+    "homebridge",
+    "homebridge-plugin",
+    "sonos"
   ],
   "homepage": "https://github.com/credding/homebridge-sonos#README.md",
   "bugs": {
@@ -13,19 +15,21 @@
   "license": "ISC",
   "author": "Chandler Redding",
   "files": [
-    "dist/*",
+    "lib/",
     "config.schema.json"
   ],
-  "main": "dist/index.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/credding/homebridge-sonos.git"
   },
   "scripts": {
-    "build": "rimraf \"./dist/*\" && tsc"
+    "clean": "rimraf \"./lib/\"",
+    "build": "npm run clean && tsc",
+    "prepare": "npm run build"
   },
   "dependencies": {
-    "@credding/homebridge-util": "^0.1.2",
+    "@credding/homebridge-jsx": "^0.1.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
