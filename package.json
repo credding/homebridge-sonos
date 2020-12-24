@@ -1,7 +1,7 @@
 {
   "displayName": "Sonos",
   "name": "@credding/homebridge-sonos",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "keywords": [
     "homebridge",
@@ -29,7 +29,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@credding/homebridge-jsx": "^0.1.0",
+    "@credding/homebridge-jsx": "^0.2.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {

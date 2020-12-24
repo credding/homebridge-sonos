@@ -1,4 +1,5 @@
-import { DynamicPlatform, usePlatformConfig } from "@credding/homebridge-jsx";
+import { DynamicPlatform } from "@credding/homebridge-jsx";
+import { API, Logging } from "homebridge";
 import { PLATFORM_NAME, PLUGIN_IDENTIFIER } from "./settings";
 import { SonosApi } from "./SonosApi";
 import { SonosApiContext } from "./SonosApiContext";
@@ -10,9 +11,11 @@ interface SonosConfig {
   readonly refreshToken: string;
 }
 
-export const SonosPlatform = async () => {
-  const config = usePlatformConfig<SonosConfig>();
-
+export const SonosPlatform = async (
+  logger: Logging,
+  config: SonosConfig,
+  api: API
+) => {
   const sonosApi = new SonosApi(config.clientKey, config.clientSecret);
   await sonosApi.refreshToken(config.refreshToken);
 

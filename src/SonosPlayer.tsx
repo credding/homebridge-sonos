@@ -1,12 +1,12 @@
 import {
   Accessory,
   BooleanCharacteristic,
-  Categories,
   NumberCharacteristic,
   Service,
   useContext,
   useHomebridgeApi,
 } from "@credding/homebridge-jsx";
+import { Categories } from "homebridge";
 import { SonosApiContext } from "./SonosApiContext";
 
 interface SonosSpeakerProps {
@@ -14,7 +14,7 @@ interface SonosSpeakerProps {
   name: string;
 }
 
-export const SonosPlayer = async (props: SonosSpeakerProps) => {
+export const SonosPlayer = (props: SonosSpeakerProps) => {
   const { id, name } = props;
   const { hap } = useHomebridgeApi();
   const sonosApi = useContext(SonosApiContext);
