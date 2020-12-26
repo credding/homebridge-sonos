@@ -1,7 +1,9 @@
 import {
-  Accessory,
   BooleanCharacteristic,
+  Component,
   NumberCharacteristic,
+  PlatformAccessory,
+  PlatformAccessoryConfiguration,
   Service,
   useContext,
   useHomebridgeApi,
@@ -9,13 +11,15 @@ import {
 import { Categories } from "homebridge";
 import { SonosApiContext } from "./SonosApiContext";
 
-interface SonosSpeakerProps {
+type SonosSpeakerProps = {
   id: string;
   name: string;
-}
+};
 
-export const SonosPlayer = (props: SonosSpeakerProps) => {
-  const { id, name } = props;
+export const SonosPlayer = ({
+  id,
+  name,
+}: SonosSpeakerProps): Component<PlatformAccessoryConfiguration> => {
   const { hap } = useHomebridgeApi();
   const sonosApi = useContext(SonosApiContext);
 
@@ -36,7 +40,7 @@ export const SonosPlayer = (props: SonosSpeakerProps) => {
   };
 
   return (
-    <Accessory
+    <PlatformAccessory
       name={name}
       uuid={hap.uuid.generate(id)}
       category={Categories.SPEAKER}
@@ -53,6 +57,6 @@ export const SonosPlayer = (props: SonosSpeakerProps) => {
           onSet={setVolume}
         ></NumberCharacteristic>
       </Service>
-    </Accessory>
+    </PlatformAccessory>
   );
 };

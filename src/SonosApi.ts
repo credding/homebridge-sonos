@@ -7,7 +7,7 @@ const SONOS_CONTROL_API = "https://api.ws.sonos.com/control/api/v1";
 const CONTENT_TYPE_JSON_HEADER = ["Content-Type", "application/json"];
 
 export class SonosApi {
-  private accessToken: string = "";
+  private accessToken = "";
 
   constructor(private clientKey: string, private clientSecret: string) {}
 
@@ -30,7 +30,9 @@ export class SonosApi {
       access_token: accessToken,
       expires_in: expiresIn,
       refresh_token: refreshToken,
-    } = await getSuccessfulResponseJson(response);
+    }: AuthorizationApiTokenResponse = await getSuccessfulResponseJson(
+      response
+    );
 
     this.accessToken = accessToken;
     return { expiresIn, refreshToken };
@@ -51,7 +53,9 @@ export class SonosApi {
       access_token: accessToken,
       expires_in: expiresIn,
       refresh_token: newRefreshToken,
-    } = await getSuccessfulResponseJson(response);
+    }: AuthorizationApiTokenResponse = await getSuccessfulResponseJson(
+      response
+    );
 
     this.accessToken = accessToken;
     return { expiresIn, refreshToken: newRefreshToken };
@@ -124,35 +128,35 @@ export class StatusCodeError extends Error {
   }
 }
 
-export interface RefreshTokenResponse {
+export type RefreshTokenResponse = {
   refreshToken: string;
   expiresIn: number;
-}
+};
 
-export interface HouseholdsResponse {
+export type HouseholdsResponse = {
   households: Household[];
-}
+};
 
-export interface Household {
+export type Household = {
   id: string;
   name: string;
-}
+};
 
-export interface GroupsResponse {
+export type GroupsResponse = {
   groups: Group[];
   players: Player[];
   partial: boolean;
-}
+};
 
-export interface Group {
+export type Group = {
   id: string;
   name: string;
   playbackState: PlaybackStatus;
   coordinatorId: string;
   playerIds: string[];
-}
+};
 
-export interface Player {
+export type Player = {
   id: string;
   name: string;
   icon: string;
@@ -162,13 +166,13 @@ export interface Player {
   minApiVersion: string;
   capabilities: Capability[];
   deviceIds: string[];
-}
+};
 
-export interface PlayerVolume {
+export type PlayerVolume = {
   volume: number;
   muted: boolean;
   fixed: boolean;
-}
+};
 
 export const enum PlaybackStatus {
   Idle = "PLAYBACK_STATE_IDLE",
@@ -190,9 +194,17 @@ export const enum Capability {
   FixedVolume = "FIXED_VOLUME",
 }
 
-async function getSuccessfulResponseJson(response: Response) {
+type AuthorizationApiTokenResponse = {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+};
+
+async function getSuccessfulResponseJson<TResponse>(
+  response: Response
+): Promise<TResponse> {
   if (response.status >= 400) {
     throw new StatusCodeError(response.status);
   }
-  return await response.json();
+  return (await response.json()) as TResponse;
 }
